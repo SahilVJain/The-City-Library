@@ -1,0 +1,1416 @@
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.Connection;
+import java.util.*;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+public class GUI 
+{
+	static JTextField textField;
+	static int nextInt;
+	static String AdminID="2345";
+	static String AdminPW="NJIT";
+	static int count=1;
+	
+	public static void main(String[] args) throws IOException, Exception
+	{
+		
+			JFrame frame = new JFrame();
+			frame.setBounds(100, 100, 450, 300);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			
+			JPanel panel = new JPanel();
+			frame.getContentPane().add(panel, BorderLayout.CENTER);
+			panel.setLayout(null);
+			
+			JLabel lblTheCityLibrary = new JLabel("The City Library");
+			lblTheCityLibrary.setFont(new Font("Tahoma", Font.BOLD, 14));
+			lblTheCityLibrary.setBounds(157, 26, 109, 22);
+			panel.add(lblTheCityLibrary);
+			
+			JLabel lblReader = new JLabel("1. Reader");
+			lblReader.setBounds(45, 74, 68, 22);
+			panel.add(lblReader);
+			
+			JLabel lblAdministrator = new JLabel("2. Administrator");
+			lblAdministrator.setBounds(45, 100, 102, 22);
+			panel.add(lblAdministrator);
+			
+			JLabel lblQuit = new JLabel("3. Quit");
+			lblQuit.setBounds(45, 126, 58, 22);
+			panel.add(lblQuit);
+			
+			JLabel lblEnterYourChoice = new JLabel("Enter Your Choice");
+			lblEnterYourChoice.setBounds(55, 171, 102, 22);
+			panel.add(lblEnterYourChoice);
+			
+			textField = new JTextField();
+			textField.setBounds(180, 172, 86, 20);
+			panel.add(textField);
+			textField.setColumns(10);
+			
+			frame.setVisible(true);
+			textField.addActionListener(new ActionListener() 
+			{
+				public void actionPerformed(ActionEvent e) 
+				{
+					int nextInt=Integer.parseInt(textField.getText());
+					switch(nextInt)
+					{
+					case 1:{
+						JFrame frame1=new JFrame();
+						frame1.setBounds(100, 100, 287, 169);
+						frame1.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+						
+						JPanel panel1 = new JPanel();
+						frame1.getContentPane().add(panel1, BorderLayout.CENTER);
+						panel1.setLayout(null);
+						
+						JLabel lblNewLabel1 = new JLabel("Reader Login");
+						lblNewLabel1.setFont(new Font("Tahoma", Font.BOLD, 12));
+						lblNewLabel1.setBounds(90, 11, 95, 22);
+						panel1.add(lblNewLabel1);
+						
+						JLabel lblCardNumber1 = new JLabel("Card Number");
+						lblCardNumber1.setBounds(21, 44, 88, 27);
+						panel1.add(lblCardNumber1);
+						
+						JTextField textField1 = new JTextField();
+						textField1.setBounds(100, 47, 86, 20);
+						panel1.add(textField1);
+						textField1.setColumns(10);
+						
+						JButton btnEnter1 = new JButton("Enter");
+						btnEnter1.setBounds(78, 82, 89, 23);
+						panel1.add(btnEnter1);
+						frame1.setVisible(true);
+						btnEnter1.addActionListener(new ActionListener() 
+						{
+							public void actionPerformed(ActionEvent e) 
+							{
+								String s=textField1.getText();
+								 try
+						        {
+						        	Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/city_library","root","root");
+						        	Statement myStat=myConn.createStatement();
+						        	
+						        	String sql="Select READERID from READER Where READERID = "+s;
+						        	ResultSet rs=myStat.executeQuery(sql);
+						        	if(!rs.next())
+									{
+						        		JOptionPane.showMessageDialog(null, "Wrong CardNumber");
+									}
+									else
+									{
+										reader();
+									}
+						      	
+						        }
+						        catch(Exception ex)
+						        {
+						        	ex.printStackTrace();
+						        }
+								
+							}
+						});
+						
+							}
+					break;
+					
+					case 2:{
+						JFrame frame2 = new JFrame();
+						frame2.setBounds(100, 100, 287, 231);
+						frame2.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+						
+						JPanel panel2 = new JPanel();
+						frame2.getContentPane().add(panel2, BorderLayout.CENTER);
+						panel2.setLayout(null);
+						
+						JLabel lblNewLabel2 = new JLabel("Administrator Login");
+						lblNewLabel2.setFont(new Font("Tahoma", Font.BOLD, 12));
+						lblNewLabel2.setBounds(45, 11, 182, 22);
+						panel2.add(lblNewLabel2);
+						
+						JLabel lblCardNumber2 = new JLabel("ID");
+						lblCardNumber2.setBounds(21, 44, 88, 27);
+						panel2.add(lblCardNumber2);
+						
+						JTextField textField2 = new JTextField();
+						textField2.setBounds(107, 47, 97, 20);
+						panel2.add(textField2);
+						textField2.setColumns(10);
+						
+						JButton btnEnter2 = new JButton("Enter");
+						
+						btnEnter2.setBounds(66, 127, 89, 23);
+						panel2.add(btnEnter2);
+						
+						JLabel lblPassword2 = new JLabel("Password");
+						lblPassword2.setBounds(21, 86, 76, 20);
+						panel2.add(lblPassword2);
+						
+						JPasswordField passwordField = new JPasswordField();
+						passwordField.setBounds(107, 86, 97, 20);
+						panel2.add(passwordField);
+						frame2.setVisible(true);
+						
+						btnEnter2.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								String s1=textField2.getText();
+								System.out.println(s1);
+								String r=passwordField.getText();
+								System.out.println(r);
+								
+								if(s1.equals(AdminID) && r.equals(AdminPW))
+								{
+									administrator();
+								}
+								
+								else
+								{
+									JOptionPane.showMessageDialog(null,"Wrong ID or Password");
+								}
+							}
+						});
+							}
+					break;
+					
+					case 3: {frame.setVisible(false);
+					}
+					break;
+					
+					default: { 
+						JOptionPane.showMessageDialog(null,"Wrong choice entered");
+					}
+					break;
+				}	
+				}
+			});
+	}
+	
+	public static void reader()
+	{
+		JFrame frame4 = new JFrame();
+		frame4.setBounds(100, 100, 377, 317);
+		frame4.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
+		JPanel panel4 = new JPanel();
+		frame4.getContentPane().add(panel4, BorderLayout.CENTER);
+		panel4.setLayout(null);
+		
+		JLabel lblReaderMenu4 = new JLabel("Reader Menu");
+		lblReaderMenu4.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblReaderMenu4.setBounds(129, 11, 98, 25);
+		panel4.add(lblReaderMenu4);
+		
+		JLabel lblSearchDocument4 = new JLabel("1. Search Document");
+		lblSearchDocument4.setBounds(30, 49, 242, 14);
+		panel4.add(lblSearchDocument4);
+		
+		JLabel lblDoucumentCheckout = new JLabel("2. Doucument Checkout");
+		lblDoucumentCheckout.setBounds(30, 70, 292, 14);
+		panel4.add(lblDoucumentCheckout);
+		
+		JLabel lblDocumentReturn = new JLabel("3. Document Return");
+		lblDocumentReturn.setBounds(30, 93, 276, 14);
+		panel4.add(lblDocumentReturn);
+		
+		JLabel lblDocumentReserve = new JLabel("4. Document Reserve");
+		lblDocumentReserve.setBounds(30, 115, 292, 14);
+		panel4.add(lblDocumentReserve);
+		
+		JLabel lblPrintList = new JLabel("6. Print List of Documents Reserved");
+		lblPrintList.setBounds(30, 155, 292, 14);
+		panel4.add(lblPrintList);
+		
+		JLabel lblComputeFine = new JLabel("5. Compute Fine");
+		lblComputeFine.setBounds(30, 135, 276, 14);
+		panel4.add(lblComputeFine);
+		
+		JLabel lblPrintDocument = new JLabel("7. Print Document ID and Titles published by Publisher");
+		lblPrintDocument.setBounds(30, 174, 321, 14);
+		panel4.add(lblPrintDocument);
+		
+		JLabel lblQuit = new JLabel("8. Quit");
+		lblQuit.setBounds(30, 192, 90, 14);
+		panel4.add(lblQuit);
+		
+		JLabel lblEnterYourChoice = new JLabel("Enter Your Choice");
+		lblEnterYourChoice.setBounds(30, 217, 106, 25);
+		panel4.add(lblEnterYourChoice);
+		
+		JTextField textField4 = new JTextField();
+		textField4.setBounds(146, 219, 57, 20);
+		panel4.add(textField4);
+		textField4.setColumns(10);
+		
+		JButton btnEnter4 = new JButton("Enter");
+		btnEnter4.setBounds(129, 244, 89, 23);
+		panel4.add(btnEnter4);
+		frame4.setVisible(true);
+		
+		btnEnter4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String s=textField4.getText();
+				
+				switch(s)
+				{
+				case "1":{
+					JFrame frame5 = new JFrame();
+					
+					frame5.setBounds(100, 100, 377, 317);
+					frame5.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					
+					JPanel panel5 = new JPanel();
+					frame5.getContentPane().add(panel5, BorderLayout.CENTER);
+					panel5.setLayout(null);
+					
+					JLabel lblSearchDocument = new JLabel("Search Document ");
+					lblSearchDocument.setFont(new Font("Tahoma", Font.BOLD, 11));
+					lblSearchDocument.setBounds(115, 22, 154, 20);
+					panel5.add(lblSearchDocument);
+					
+					JLabel lblId = new JLabel("1. ID");
+					lblId.setBounds(40, 58, 46, 14);
+					panel5.add(lblId);
+					
+					JLabel lblTitle = new JLabel("2. Title");
+					lblTitle.setBounds(40, 79, 64, 14);
+					panel5.add(lblTitle);
+					
+					JLabel lblPublisherName = new JLabel("3. Publisher Name");
+					lblPublisherName.setBounds(40, 100, 256, 14);
+					panel5.add(lblPublisherName);
+					
+					JLabel lblEnterYourChoice = new JLabel("Enter Your Choice");
+					lblEnterYourChoice.setBounds(40, 140, 109, 20);
+					panel5.add(lblEnterYourChoice);
+					
+					JTextField textField5 = new JTextField();
+					textField5.setBounds(150, 140, 86, 20);
+					panel5.add(textField5);
+					textField5.setColumns(10);
+					JButton btnEnter5 = new JButton("Enter");
+					btnEnter5.setBounds(115, 189, 89, 23);
+					panel5.add(btnEnter5);
+					btnEnter5.setBounds(115, 189, 89, 23);
+					panel5.add(btnEnter5);
+					frame5.setVisible(true);
+					btnEnter5.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							String ch=textField5.getText();
+							
+							if(ch.equals("1"))
+							{
+								
+								JFrame newframe = new JFrame();
+								newframe.setBounds(100, 100, 237, 147);
+								newframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+								
+								JPanel newpanel = new JPanel();
+								newframe.getContentPane().add(newpanel, BorderLayout.CENTER);
+								newpanel.setLayout(null);
+								
+								JLabel lblEnterId = new JLabel("Enter ID");
+								lblEnterId.setBounds(34, 31, 63, 14);
+								newpanel.add(lblEnterId);
+								
+								JTextField newtextField = new JTextField();
+								newtextField.setBounds(107, 28, 86, 20);
+								newpanel.add(newtextField);
+								newtextField.setColumns(10);
+								
+								JButton btnNewButton = new JButton("Enter");
+								btnNewButton.setBounds(55, 60, 89, 23);
+								newpanel.add(btnNewButton);
+								newframe.setVisible(true);
+								btnNewButton.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent e) {
+										String ID=newtextField.getText();
+										try {
+											Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/city_library","root","root");
+											Statement myStat=myConn.createStatement();
+											
+											ResultSet result=myStat.executeQuery("SELECT * FROM DOCUMENT WHERE DOCID = "+ID);
+											while(result.next())
+								        	{
+												System.out.println(result.getInt("DOCID")+"   "+result.getString("TITLE")+"    "+result.getDate("PDATE")+"	"+result.getInt("PublisherID"));
+								        	}
+										} 
+										catch (SQLException e1) {
+											e1.printStackTrace();
+										}
+										
+									}
+								});
+								
+							}
+							else
+								if(ch.equals("2"))
+								{
+									JFrame newframe = new JFrame();
+									newframe.setBounds(100, 100, 237, 147);
+									newframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+									
+									JPanel newpanel = new JPanel();
+									newframe.getContentPane().add(newpanel, BorderLayout.CENTER);
+									newpanel.setLayout(null);
+									
+									JLabel lblEnterId = new JLabel("Enter Title");
+									lblEnterId.setBounds(34, 31, 63, 14);
+									newpanel.add(lblEnterId);
+									
+									JTextField newtextField = new JTextField();
+									newtextField.setBounds(107, 28, 86, 20);
+									newpanel.add(newtextField);
+									newtextField.setColumns(10);
+									
+									JButton btnNewButton = new JButton("Enter");
+									btnNewButton.setBounds(55, 60, 89, 23);
+									newpanel.add(btnNewButton);
+									newframe.setVisible(true);
+									btnNewButton.addActionListener(new ActionListener() {
+										public void actionPerformed(ActionEvent e) {
+											String Title=newtextField.getText();
+											try {
+												Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/city_library","root","root");
+												Statement myStat=myConn.createStatement();
+												
+												ResultSet result=myStat.executeQuery("SELECT * FROM DOCUMENT WHERE TITLE = '"+Title+"'");
+												while(result.next())
+									        	{
+													System.out.println(result.getInt("DOCID")+"   "+result.getString("TITLE")+"    "+result.getDate("PDATE")+"	"+result.getInt("PublisherID"));
+									        	}
+												
+											} catch (SQLException e1) {
+												// TODO Auto-generated catch block
+												e1.printStackTrace();
+											}
+											
+										}
+									});
+								}
+								else
+									if(ch.equals("3"))
+									{
+										JFrame newframe = new JFrame();
+										newframe.setBounds(100, 100, 323, 147);
+										newframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+										
+										JPanel newpanel = new JPanel();
+										newframe.getContentPane().add(newpanel, BorderLayout.CENTER);
+										newpanel.setLayout(null);
+										
+										JLabel lblEnterId = new JLabel("Enter Publisher Name");
+										lblEnterId.setBounds(34, 31, 138, 14);
+										newpanel.add(lblEnterId);
+										
+										JTextField newtextField = new JTextField();
+										newtextField.setBounds(167, 28, 86, 20);
+										newpanel.add(newtextField);
+										newtextField.setColumns(10);
+										
+										JButton btnNewButton = new JButton("Enter");
+										btnNewButton.addActionListener(new ActionListener() {
+											public void actionPerformed(ActionEvent e) {
+											}
+										});
+										btnNewButton.setBounds(108, 59, 89, 23);
+										newpanel.add(btnNewButton);
+										newframe.setVisible(true);
+										btnNewButton.addActionListener(new ActionListener() {
+											public void actionPerformed(ActionEvent e) {
+												String PName=newtextField.getText();
+												try {
+													Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/city_library","root","root");
+													Statement myStat=myConn.createStatement();
+													
+													ResultSet result=myStat.executeQuery("SELECT * FROM DOCUMENT d,PUBLISHER p WHERE p.PUBLISHERID=d.PUBLISHERID AND p.PUBNAME = '"+PName+"'");
+													//System.out.println("DOCID   TITLE		PDATE      PUBLISHERID");
+													while(result.next())
+										        	{
+										        		System.out.println(result.getInt("DOCID")+"   "+result.getString("TITLE")+"    "+result.getDate("PDATE")+"	"+result.getInt("PublisherID"));
+										        	}
+													
+												} catch (SQLException e1) {
+													// TODO Auto-generated catch block
+													e1.printStackTrace();
+												}
+												//System.out.println(PName);
+											}
+										});
+									}
+									else
+										{
+										JOptionPane.showMessageDialog(null,"Wrong choice");
+										}
+						}
+					});
+					
+				}
+				break;
+				
+				case "2":{
+					JFrame frame = new JFrame();
+					
+					frame.setBounds(100, 100, 287, 293);
+					frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					
+					JPanel panel = new JPanel();
+					frame.getContentPane().add(panel, BorderLayout.CENTER);
+					panel.setLayout(null);
+					
+					JLabel lblReaderId = new JLabel("Reader ID");
+					lblReaderId.setBounds(38, 32, 91, 14);
+					panel.add(lblReaderId);
+					
+					JLabel lblDocumentId = new JLabel("Document ID");
+					lblDocumentId.setBounds(38, 70, 103, 14);
+					panel.add(lblDocumentId);
+					
+					JLabel lblCopyNo = new JLabel("Copy No");
+					lblCopyNo.setBounds(38, 111, 46, 14);
+					panel.add(lblCopyNo);
+					
+					JLabel lblLibraryId = new JLabel("Library ID");
+					lblLibraryId.setBounds(38, 151, 103, 14);
+					panel.add(lblLibraryId);
+					
+					JTextField textField_1 = new JTextField();
+					textField_1.setBounds(139, 29, 86, 20);
+					panel.add(textField_1);
+					textField_1.setColumns(10);
+					
+					JTextField textField_2 = new JTextField();
+					textField_2.setBounds(139, 67, 86, 20);
+					panel.add(textField_2);
+					textField_2.setColumns(10);
+					
+					JTextField textField_3 = new JTextField();
+					textField_3.setBounds(139, 108, 86, 20);
+					panel.add(textField_3);
+					textField_3.setColumns(10);
+					
+					JTextField textField_4 = new JTextField();
+					textField_4.setBounds(139, 148, 86, 20);
+					panel.add(textField_4);
+					textField_4.setColumns(10);
+					
+					JButton btnSubmit = new JButton("Submit");
+					btnSubmit.setBounds(77, 192, 89, 23);
+					panel.add(btnSubmit);
+					
+					frame.setVisible(true);
+					btnSubmit.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							String RID=textField_1.getText();
+							String DID=textField_2.getText();
+							String CopyNo=textField_3.getText();
+							String LibID=textField_4.getText();
+							SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+							String date;
+							try {
+								date = sdf1.format(new Date());
+								
+								Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/city_library","root","root");
+								Statement myStat=myConn.createStatement();
+								System.out.println("Start Date: "+date);
+								String check="Select * from borrows where DOCID = "+DID+" and COPYNO = "+CopyNo+" and LibID = "+LibID+" AND RDTIME IS NULL";
+								ResultSet re=myStat.executeQuery(check);
+								
+								if(!re.next())
+								{
+									String insert="Insert Into BORROWS(READERID,DOCID,COPYNO,LIBID,BDTIME,RDTIME) VALUES ("+RID+","+DID+","+CopyNo+","+LibID+",'"+date+"',"+null+")";
+									int a = myStat.executeUpdate(insert);
+									
+									if(a>0){
+										String delete = "Delete from reserves where READERID = "+RID+" and DOCID = "+DID+" and COPYNO = "+CopyNo+" and LIBID = "+LibID;
+										//System.out.println(delete);
+										myStat.executeUpdate(delete);
+										
+										
+										ResultSet r=myStat.executeQuery("SELECT BORNUMBER FROM BORROWS ORDER BY BORNUMBER DESC");
+										r.next();
+										
+										JOptionPane.showMessageDialog(null,"You have successfully made an entry into the System\n Borrow Number is: "+r.getInt("BORNUMBER"));
+									}else{
+										JOptionPane.showMessageDialog(null,"Unable to add record!!");
+									}
+								}else{
+									JOptionPane.showMessageDialog(null, "This Document is already borrowed by someone");
+								}
+							} 
+							catch(SQLException ex){
+								String sqlStatus = ex.getSQLState();
+								System.out.println("STATUS: "+sqlStatus);
+								
+								if(sqlStatus.equals("45000")){
+									JOptionPane.showMessageDialog(null, "This Document is already reserved by someone");
+								}
+							}
+							catch(Exception ex){
+								ex.printStackTrace();
+							}			
+							
+						}
+					});
+					
+				}break;
+				
+				case "3":{
+					JFrame frame = new JFrame();
+					frame.setBounds(100, 100, 320, 222);
+					frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					
+					JPanel panel = new JPanel();
+					frame.getContentPane().add(panel, BorderLayout.CENTER);
+					panel.setLayout(null);
+					
+					JLabel lblBorrowNumber = new JLabel("Borrow Number");
+					lblBorrowNumber.setBounds(47, 39, 99, 14);
+					panel.add(lblBorrowNumber);
+					
+					JTextField textField12 = new JTextField();
+					textField12.setBounds(158, 36, 86, 20);
+					panel.add(textField12);
+					textField12.setColumns(10);
+					
+					JButton btnNewButton = new JButton("Submit");
+					btnNewButton.setBounds(91, 123, 89, 23);
+					panel.add(btnNewButton);
+					
+					JLabel lblLibraryId = new JLabel("Library ID");
+					lblLibraryId.setBounds(47, 80, 99, 14);
+					panel.add(lblLibraryId);
+					
+					JTextField textField_8 = new JTextField();
+					textField_8.setBounds(158, 77, 86, 20);
+					panel.add(textField_8);
+					textField_8.setColumns(10);
+					frame.setVisible(true);
+					btnNewButton.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							String BN=textField12.getText();
+							String LibID=textField_8.getText();
+							SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+							String date;
+							try {
+								date = sdf1.format(new Date());
+								Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/city_library","root","root");
+								Statement myStat=myConn.createStatement();
+								String check="Select * from borrows where BORNUMBER = "+BN+" and LIBID = "+LibID;
+								ResultSet rs = myStat.executeQuery(check);
+								if(!rs.next())
+								{
+									JOptionPane.showMessageDialog(null, "You must return the Document to the Library from where you borrowed it");
+								}
+								else
+								{
+									String insert="UPDATE BORROWS SET RDTIME='"+date+"' WHERE BORNUMBER="+BN+" and LIBID = "+LibID;
+									myStat.executeUpdate(insert);
+									JOptionPane.showMessageDialog(null,"Document Returned");
+								}
+								
+							} 
+							catch(Exception ex)
+							{
+								ex.printStackTrace();
+							}			
+							
+						}
+					});
+				
+				}break;
+				
+				case "4":{
+					JFrame frame = new JFrame();
+					
+					frame.setBounds(100, 100, 318, 272);
+					frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					
+					JPanel panel = new JPanel();
+					frame.getContentPane().add(panel, BorderLayout.CENTER);
+					panel.setLayout(null);
+					
+					JLabel lblReaderId = new JLabel("Reader ID");
+					lblReaderId.setBounds(34, 25, 101, 14);
+					panel.add(lblReaderId);
+					
+					JLabel lblDocId = new JLabel("Document ID");
+					lblDocId.setBounds(34, 60, 101, 14);
+					panel.add(lblDocId);
+					
+					JLabel lblCopyNo = new JLabel("Copy No");
+					lblCopyNo.setBounds(34, 100, 46, 14);
+					panel.add(lblCopyNo);
+					
+					JLabel lblLibraryId = new JLabel("Library ID");
+					lblLibraryId.setBounds(34, 135, 101, 14);
+					panel.add(lblLibraryId);
+					
+					JTextField textField_1 = new JTextField();
+					textField_1.setBounds(163, 22, 86, 20);
+					panel.add(textField_1);
+					textField_1.setColumns(10);
+					
+					JTextField textField_2 = new JTextField();
+					textField_2.setBounds(163, 57, 86, 20);
+					panel.add(textField_2);
+					textField_2.setColumns(10);
+					
+					JTextField textField_3 = new JTextField();
+					textField_3.setBounds(163, 97, 86, 20);
+					panel.add(textField_3);
+					textField_3.setColumns(10);
+					
+					JTextField textField_4 = new JTextField();
+					textField_4.setBounds(163, 132, 86, 20);
+					panel.add(textField_4);
+					textField_4.setColumns(10);
+					
+					JButton btnSubmit = new JButton("Submit");
+					btnSubmit.setBounds(89, 179, 89, 23);
+					panel.add(btnSubmit);
+					frame.setVisible(true);
+					
+					btnSubmit.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							String RID=textField_1.getText();	
+							String DocID=textField_2.getText();
+							String CopyNo=textField_3.getText();
+							String LibID=textField_4.getText();
+							SimpleDateFormat stf=new SimpleDateFormat("HH:mm:ss");
+							Calendar cal = Calendar.getInstance();
+							String time=stf.format(cal.getTime());
+							try {
+								Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/city_library","root","root");
+								Statement myStat=myConn.createStatement();
+								String check="Select * from reserves where DOCID = "+DocID+" and CopyNo = "+CopyNo+" and LibID = "+LibID;
+								ResultSet rs=myStat.executeQuery(check);
+								if(!rs.next())
+								{
+									try{
+										Connection myConn1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/city_library","root","root");
+										Statement myStat1=myConn1.createStatement();
+										String insert="INSERT INTO RESERVES (READERID, DOCID, COPYNO, LIBID, DTIME) VALUES ("+RID+","+DocID+","+CopyNo+","+LibID+",'"+time+"')";
+										myStat.executeUpdate(insert);
+										
+										ResultSet r=myStat.executeQuery("SELECT RESNUMBER FROM RESERVES ORDER BY RESNUMBER DESC");
+										r.next();
+										JOptionPane.showMessageDialog(null,"Your document is reserved. Please collect before 6pm\n Reservation Number is "+r.getInt("RESNUMBER"));
+									}
+									catch(Exception ex)
+									{
+										ex.printStackTrace();
+									}
+									
+								}
+								else
+								{
+									JOptionPane.showMessageDialog(null,"This document is already reserved by someone");
+								}
+								
+							} 
+							catch(Exception ex)
+							{
+								ex.printStackTrace();
+							}			
+							
+						}
+					});
+					
+				}break;
+				
+				case "5":{
+					JFrame frame = new JFrame();
+					
+					frame.setBounds(100, 100, 303, 156);
+					frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					
+					JPanel panel = new JPanel();
+					frame.getContentPane().add(panel, BorderLayout.CENTER);
+					panel.setLayout(null);
+					
+					JLabel lblBorrowNumber = new JLabel("Borrow Number");
+					lblBorrowNumber.setBounds(36, 31, 96, 14);
+					panel.add(lblBorrowNumber);
+					
+					JTextField textField_3 = new JTextField();
+					textField_3.setBounds(152, 28, 86, 20);
+					panel.add(textField_3);
+					textField_3.setColumns(10);
+					
+					JButton btnSubmit = new JButton("Submit");
+					btnSubmit.setBounds(81, 69, 89, 23);
+					panel.add(btnSubmit);
+					frame.setVisible(true);
+					
+					btnSubmit.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							//String RID=textField14.getText();
+							//String CDate=textField_1.getText();
+							//String DocID=textField_2.getText();
+							String BN=textField_3.getText();
+							
+							try {
+								Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/city_library","root","root");
+								Statement myStat=myConn.createStatement();
+								
+								ResultSet r=myStat.executeQuery("Select datediff(RDTIME,date_add(BDTIME,INTERVAL 20 day))*0.20 AS fine from borrows where datediff(RDTIME,BDTIME)>20 and BORNUMBER = "+BN);
+								//ResultSet rs=myStat.executeQuery("Select datediff(RDTIME,date_add(BDTIME,INTERVAL 20 day))*0.20 AS fine from borrows where datediff(RDTIME,BDTIME)>20 and BORNUMBER = "+BN);
+								//System.out.println("ResNumber	ReaderID	DocID	CopyID	LibID	Time");
+								if(!r.next())
+								{
+									JOptionPane.showMessageDialog(null,"Fine is 0");
+								}
+								else
+								{
+									try {
+										Connection myConn1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/city_library","root","root");
+										Statement myStat1=myConn1.createStatement();
+										
+										//ResultSet r=myStat.executeQuery("Select datediff(RDTIME,date_add(BDTIME,INTERVAL 20 day))*0.20 AS fine from borrows where datediff(RDTIME,BDTIME)>20 and BORNUMBER = "+BN);
+										ResultSet rs=myStat.executeQuery("Select datediff(RDTIME,date_add(BDTIME,INTERVAL 20 day))*0.20 AS fine from borrows where datediff(RDTIME,BDTIME)>20 and BORNUMBER = "+BN);
+										//System.out.println("ResNumber	ReaderID	DocID	CopyID	LibID	Time");
+									
+										
+											while(rs.next())
+											{
+											JOptionPane.showMessageDialog(null,"Fine is "+rs.getDouble(1));
+											//System.out.println(r.getDouble(1));
+											}
+									
+									} 
+									catch(Exception ex)
+									{
+										ex.printStackTrace();
+									}		
+								}
+								
+								
+							} 
+							catch(Exception ex)
+							{
+								ex.printStackTrace();
+							}		
+						}
+					});
+					
+				}break;
+				
+				case "6":{
+					JFrame frame = new JFrame();
+					
+					frame.setBounds(100, 100, 282, 160);
+					frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					
+					JPanel panel = new JPanel();
+					frame.getContentPane().add(panel, BorderLayout.CENTER);
+					panel.setLayout(null);
+					
+					JLabel lblReaderId = new JLabel("Reader ID");
+					lblReaderId.setBounds(46, 29, 97, 14);
+					panel.add(lblReaderId);
+					
+					JTextField textField_1 = new JTextField();
+					textField_1.setBounds(137, 26, 86, 20);
+					panel.add(textField_1);
+					textField_1.setColumns(10);
+					
+					JButton btnSubmit = new JButton("Submit");
+					btnSubmit.setBounds(75, 68, 89, 23);
+					panel.add(btnSubmit);
+					frame.setVisible(true);
+					
+					btnSubmit.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							String RID=textField_1.getText();
+							try {
+								Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/city_library","root","root");
+								Statement myStat=myConn.createStatement();
+								
+								ResultSet r=myStat.executeQuery("SELECT DOCID FROM RESERVES WHERE READERID="+RID);
+								//System.out.println("ResNumber	ReaderID	DocID	CopyID	LibID	Time");
+								System.out.println("DocID  Status");
+								while(r.next())
+									{
+									System.out.println(r.getInt(1)+"      Reserved");
+									}
+								
+							} 
+							catch(Exception ex)
+							{
+								ex.printStackTrace();
+							}			
+							
+						}
+					});
+					
+				}break;
+				
+				case "7":{
+					JFrame frame = new JFrame();
+					frame.setBounds(100, 100, 297, 161);
+					frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					
+					JPanel panel = new JPanel();
+					frame.getContentPane().add(panel, BorderLayout.CENTER);
+					panel.setLayout(null);
+					
+					JLabel lblReservationNumber = new JLabel("Publisher Name");
+					lblReservationNumber.setBounds(48, 37, 123, 14);
+					panel.add(lblReservationNumber);
+					
+					JTextField textField16 = new JTextField();
+					textField16.setBounds(152, 34, 86, 20);
+					panel.add(textField16);
+					textField16.setColumns(10);
+					
+					JButton btnSubmit = new JButton("Submit");
+					btnSubmit.setBounds(82, 72, 89, 23);
+					panel.add(btnSubmit);
+					frame.setVisible(true);
+					
+					btnSubmit.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							String PubName=textField16.getText();
+							try {
+								Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/city_library","root","root");
+								Statement myStat=myConn.createStatement();
+								
+								ResultSet r=myStat.executeQuery("SELECT D.DOCID,D.TITLE FROM DOCUMENT D,PUBLISHER P WHERE D.PUBLISHERID=P.PUBLISHERID AND P.PUBNAME='"+PubName+"'");
+								System.out.println("DOCID   TITLE");
+								while(r.next())
+									{
+									System.out.println(r.getInt(1)+"       "+r.getString(2));
+									}
+								
+							} 
+							catch(Exception ex)
+							{
+								ex.printStackTrace();
+							}			
+						}
+					});
+					
+				}break;
+				
+				case "8":{frame4.setVisible(false);}break;
+				
+				default:{
+					JOptionPane.showMessageDialog(null,"Wrong Choice");
+				}break;
+			}
+		}
+	});
+		}
+	
+	public static void administrator()
+	{
+		JFrame frame6 = new JFrame();
+		frame6.setBounds(100, 100, 390, 335);
+		frame6.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
+		JPanel panel6 = new JPanel();
+		frame6.getContentPane().add(panel6, BorderLayout.CENTER);
+		panel6.setLayout(null);
+		
+		JLabel lblAdministratorMenu = new JLabel("Administrator Menu");
+		lblAdministratorMenu.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblAdministratorMenu.setBounds(114, 11, 206, 14);
+		panel6.add(lblAdministratorMenu);
+		
+		JLabel lblAddA = new JLabel("1. Add a Document Copy");
+		lblAddA.setBounds(33, 47, 162, 14);
+		panel6.add(lblAddA);
+		
+		JLabel lblsearchDocumentAnd = new JLabel("2. Search Document and Check Status");
+		lblsearchDocumentAnd.setBounds(33, 64, 233, 14);
+		panel6.add(lblsearchDocumentAnd);
+		
+		JLabel lbladdNewReader = new JLabel("3. Add New Reader");
+		lbladdNewReader.setBounds(33, 81, 147, 14);
+		panel6.add(lbladdNewReader);
+		
+		JLabel lblprintBranchInformation = new JLabel("4. Print Branch Information");
+		lblprintBranchInformation.setBounds(33, 98, 177, 14);
+		panel6.add(lblprintBranchInformation);
+		
+		JLabel lblTop = new JLabel("5. Top 10 most frequent borrowers in a branch");
+		lblTop.setBounds(33, 115, 304, 14);
+		panel6.add(lblTop);
+		
+		JLabel lblTop_1 = new JLabel("6. Top 10 most borrowed books in a branch");
+		lblTop_1.setBounds(33, 132, 276, 14);
+		panel6.add(lblTop_1);
+		
+		JLabel lblMost = new JLabel("7. 10 most popular books of the year");
+		lblMost.setBounds(33, 149, 233, 14);
+		panel6.add(lblMost);
+		
+		JLabel lblFindAverage = new JLabel("8. Find average fine paid per reader");
+		lblFindAverage.setBounds(33, 167, 263, 14);
+		panel6.add(lblFindAverage);
+		
+		JLabel lblquit = new JLabel("9.Quit");
+		lblquit.setBounds(33, 183, 46, 14);
+		panel6.add(lblquit);
+		
+		JLabel lblEnterYourChoice = new JLabel("Enter Your Choice");
+		lblEnterYourChoice.setBounds(33, 208, 126, 14);
+		panel6.add(lblEnterYourChoice);
+		
+		JTextField textField6 = new JTextField();
+		textField6.setBounds(156, 205, 86, 20);
+		panel6.add(textField6);
+		textField6.setColumns(10);
+		
+		JButton btnEnter6 = new JButton("Enter");
+		btnEnter6.setBounds(139, 249, 89, 23);
+		panel6.add(btnEnter6);
+		frame6.setVisible(true);
+		btnEnter6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String ch=textField6.getText();
+				
+				switch(ch)
+				{
+				case "1":{
+					JFrame frame10 = new JFrame();
+					frame10.setBounds(100, 100, 320, 294);
+					frame10.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					
+					JPanel panel10 = new JPanel();
+					frame10.getContentPane().add(panel10, BorderLayout.CENTER);
+					panel10.setLayout(null);
+					
+					JLabel lblReaderId = new JLabel("Publisher ID");
+					lblReaderId.setBounds(33, 26, 86, 14);
+					panel10.add(lblReaderId);
+					
+					JLabel lblTitle = new JLabel("Publisher Name");
+					lblTitle.setBounds(33, 51, 122, 14);
+					panel10.add(lblTitle);
+					
+					JLabel lblNewLabel = new JLabel("Address");
+					lblNewLabel.setBounds(33, 76, 86, 14);
+					panel10.add(lblNewLabel);
+					
+					JLabel lblPublisherId = new JLabel("Document ID");
+					lblPublisherId.setBounds(33, 101, 86, 14);
+					panel10.add(lblPublisherId);
+					
+					JButton btnSubmit = new JButton("Submit");
+					btnSubmit.setBounds(88, 200, 89, 23);
+					panel10.add(btnSubmit);
+					
+					JLabel lblNewLabel_1 = new JLabel("Title");
+					lblNewLabel_1.setBounds(33, 130, 46, 14);
+					panel10.add(lblNewLabel_1);
+					
+					JLabel lblNewLabel_2 = new JLabel("Publishing Date");
+					lblNewLabel_2.setBounds(33, 155, 109, 14);
+					panel10.add(lblNewLabel_2);
+					
+					JTextField textField20 = new JTextField();
+					textField20.setBounds(147, 23, 115, 20);
+					panel10.add(textField20);
+					textField20.setColumns(10);
+					
+					JTextField textField_1 = new JTextField();
+					textField_1.setBounds(147, 48, 115, 20);
+					panel10.add(textField_1);
+					textField_1.setColumns(10);
+					
+					JTextField textField_2 = new JTextField();
+					textField_2.setBounds(147, 73, 115, 20);
+					panel10.add(textField_2);
+					textField_2.setColumns(10);
+					
+					JTextField textField_3 = new JTextField();
+					textField_3.setBounds(147, 98, 115, 20);
+					panel10.add(textField_3);
+					textField_3.setColumns(10);
+					
+					JTextField textField_4 = new JTextField();
+					textField_4.setBounds(147, 127, 115, 20);
+					panel10.add(textField_4);
+					textField_4.setColumns(10);
+					
+					JTextField textField_5 = new JTextField();
+					textField_5.setBounds(147, 152, 115, 20);
+					panel10.add(textField_5);
+					textField_5.setColumns(10);
+					frame10.setVisible(true);
+					btnSubmit.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							String Pid=textField20.getText();
+							String PName=textField_1.getText();
+							String Address=textField_2.getText();
+							String DID=textField_3.getText();
+							String Title=textField_4.getText();
+							System.out.println(Title);
+							String PDate=textField_5.getText();
+	
+							try {
+								Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/city_library","root","root");
+								Statement myStat=myConn.createStatement();
+								String insert="Insert into PUBLISHER values("+Pid+",'"+PName+"','"+Address+"')";
+								myStat.executeUpdate(insert);
+								insert="Insert into DOCUMENT values("+DID+",'"+Title+"','"+PDate+"',"+Pid+")";
+								myStat.executeUpdate(insert);
+								
+								JOptionPane.showMessageDialog(null, "You have successfully added the document in the System");
+							} 
+							catch(Exception ex)
+							{
+								ex.printStackTrace();
+							}			
+							
+						}
+					});
+					
+					
+					
+					
+				}break;
+				
+				case "2":{
+					JFrame frame9 = new JFrame();
+					frame9.setBounds(100, 100, 266, 239);
+					frame9.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					
+					JPanel panel9 = new JPanel();
+					frame9.getContentPane().add(panel9, BorderLayout.CENTER);
+					panel9.setLayout(null);
+					
+					JLabel lblReaderId = new JLabel("Document ID");
+					lblReaderId.setBounds(33, 26, 86, 14);
+					panel9.add(lblReaderId);
+					
+					JTextField textField30 = new JTextField();
+					textField30.setBounds(130, 23, 86, 20);
+					panel9.add(textField30);
+					textField30.setColumns(10);
+					
+					JButton btnSubmit9 = new JButton("Submit");
+					btnSubmit9.setBounds(70, 149, 89, 23);
+					panel9.add(btnSubmit9);
+					
+					JLabel lblCopyNo = new JLabel("Copy No");
+					lblCopyNo.setBounds(33, 63, 86, 14);
+					panel9.add(lblCopyNo);
+					
+					JLabel lblLibId = new JLabel("Lib ID");
+					lblLibId.setBounds(33, 101, 86, 14);
+					panel9.add(lblLibId);
+					
+					JTextField textField_6 = new JTextField();
+					textField_6.setBounds(130, 60, 86, 20);
+					panel9.add(textField_6);
+					textField_6.setColumns(10);
+					
+					JTextField textField_7 = new JTextField();
+					textField_7.setBounds(130, 98, 86, 20);
+					panel9.add(textField_7);
+					textField_7.setColumns(10);
+					frame9.setVisible(true);
+					btnSubmit9.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							String Did=textField30.getText();
+							String CopyNo=textField_6.getText();
+							String LibID=textField_7.getText();
+							
+							try {
+								Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/city_library","root","root");
+								Statement myStat=myConn.createStatement();
+								ResultSet rs=myStat.executeQuery("select(case when exists (select * from  reserves where DOCID = "+Did+" AND COPYNO = "+CopyNo+" AND LIBID = "+LibID+") THEN 'Reserved' when exists (select * from  borrows where DOCID = "+Did+" AND COPYNO = "+CopyNo+" AND LIBID = "+LibID+") THEN 'Borrowed' else 'Available' end) as status from dual");
+								System.out.println("Status");
+								while(rs.next())
+					        	{
+					        		System.out.println(rs.getString(1));
+					        	}
+								
+								//JOptionPane.showMessageDialog(null, "You have successfully added the document in the System");
+							} 
+							catch(Exception ex)
+							{
+								ex.printStackTrace();
+							}		
+						}
+					});
+					
+				}break;
+				
+				case "3":{
+					JFrame frame8 = new JFrame();
+					frame8.setBounds(100, 100, 375, 283);
+					frame8.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					
+					JPanel panel8 = new JPanel();
+					frame8.getContentPane().add(panel8, BorderLayout.CENTER);
+					panel8.setLayout(null);
+					
+					JLabel lblReaderId = new JLabel("Reader ID");
+					lblReaderId.setBounds(33, 26, 79, 14);
+					panel8.add(lblReaderId);
+					
+					JLabel lblReaderType = new JLabel("Reader Type");
+					lblReaderType.setBounds(33, 61, 79, 14);
+					panel8.add(lblReaderType);
+					
+					JLabel lblNewLabel = new JLabel("Name");
+					lblNewLabel.setBounds(33, 94, 79, 14);
+					panel8.add(lblNewLabel);
+					
+					JLabel lblAddress = new JLabel("Address");
+					lblAddress.setBounds(33, 125, 79, 14);
+					panel8.add(lblAddress);
+					
+					JTextField textField8 = new JTextField();
+					textField8.setBounds(117, 23, 86, 20);
+					panel8.add(textField8);
+					textField8.setColumns(10);
+					
+					JTextField textField_1 = new JTextField();
+					textField_1.setBounds(117, 58, 86, 20);
+					panel8.add(textField_1);
+					textField_1.setColumns(10);
+					
+					JTextField textField_2 = new JTextField();
+					textField_2.setBounds(117, 91, 86, 20);
+					panel8.add(textField_2);
+					textField_2.setColumns(10);
+					
+					JTextField textField_3 = new JTextField();
+					textField_3.setBounds(117, 122, 86, 20);
+					panel8.add(textField_3);
+					textField_3.setColumns(10);
+					
+					JButton btnSubmit = new JButton("Submit");
+					btnSubmit.setBounds(127, 175, 89, 23);
+					panel8.add(btnSubmit);
+					
+					frame8.setVisible(true);
+					btnSubmit.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							String ID=textField8.getText();
+							String Type=textField_1.getText();
+							String Name=textField_2.getText();
+							String Address=textField_3.getText();
+							try {
+								Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/city_library","root","root");
+								Statement myStat=myConn.createStatement();
+								String insert="INSERT INTO READER VALUES("+ID+",'"+Type+"','"+Name+"','"+Address+"')";
+								myStat.executeUpdate(insert);
+								
+								JOptionPane.showMessageDialog(null, "New Reader successfully added in the System");
+							} 
+							catch(Exception ex)
+							{
+								ex.printStackTrace();
+							}			
+							//insert in DB these values in READER TABLE
+						}
+					});
+					
+				}break;
+				
+				case "4":{
+					JFrame frame = new JFrame();
+					
+					frame.setBounds(100, 100, 297, 161);
+					frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					
+					JPanel panel = new JPanel();
+					frame.getContentPane().add(panel, BorderLayout.CENTER);
+					panel.setLayout(null);
+					
+					JLabel lblReservationNumber = new JLabel("Library ID");
+					lblReservationNumber.setBounds(48, 37, 123, 14);
+					panel.add(lblReservationNumber);
+					
+					JTextField textField17 = new JTextField();
+					textField17.setBounds(152, 34, 86, 20);
+					panel.add(textField17);
+					textField17.setColumns(10);
+					
+					JButton btnSubmit = new JButton("Submit");
+					btnSubmit.setBounds(82, 72, 89, 23);
+					panel.add(btnSubmit);
+					frame.setVisible(true);
+					btnSubmit.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							String LibID=textField17.getText();
+							try {
+								Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/city_library","root","root");
+								Statement myStat=myConn.createStatement();
+								ResultSet rs=myStat.executeQuery("SELECT * FROM BRANCH WHERE LIBID="+LibID);
+								System.out.println("LibID  Name			Location");
+								while(rs.next())
+					        	{
+					        		System.out.println(rs.getInt(1)+"      "+rs.getString(2)+"		"+rs.getString(3));
+					        	}
+								
+							} 
+							catch(Exception ex)
+							{
+								ex.printStackTrace();
+							}			
+						}
+					});
+					
+				}break;
+				
+				case "5":{
+					JFrame frame7 = new JFrame();
+					frame7.setBounds(100, 100, 272, 132);
+					frame7.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					
+					JPanel panel7 = new JPanel();
+					frame7.getContentPane().add(panel7, BorderLayout.CENTER);
+					panel7.setLayout(null);
+					
+					JLabel lblEnterBranchId = new JLabel("Enter Branch ID");
+					lblEnterBranchId.setBounds(31, 22, 105, 20);
+					panel7.add(lblEnterBranchId);
+					
+					JTextField textField7 = new JTextField();
+					textField7.setBounds(134, 22, 86, 20);
+					panel7.add(textField7);
+					textField7.setColumns(10);
+					
+					JButton btnEnter7 = new JButton("Enter");
+					btnEnter7.setBounds(74, 53, 89, 23);
+					panel7.add(btnEnter7);
+					frame7.setVisible(true);
+					btnEnter7.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							String Libid=textField7.getText();
+							System.out.println(Libid);
+							try {
+								Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/city_library","root","root");
+								Statement myStat=myConn.createStatement();
+								ResultSet rs=myStat.executeQuery("SELECT READERID,COUNT(*) FROM BORROWS WHERE LIBID = "+Libid+" GROUP BY READERID ORDER BY COUNT(*) DESC LIMIT 10");
+								System.out.println("ReaderID  No.of Books Borrowed");
+								while(rs.next())
+					        	{
+					        		System.out.println(rs.getInt(1)+"         "+rs.getInt(2));
+					        	}
+								
+							} 
+							catch(Exception ex)
+							{
+								ex.printStackTrace();
+							}
+						}
+					});
+				}break;
+				
+				case "6":{
+					JFrame frame7 = new JFrame();
+					frame7.setBounds(100, 100, 272, 132);
+					frame7.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					
+					JPanel panel7 = new JPanel();
+					frame7.getContentPane().add(panel7, BorderLayout.CENTER);
+					panel7.setLayout(null);
+					
+					JLabel lblEnterBranchId = new JLabel("Enter Branch ID");
+					lblEnterBranchId.setBounds(31, 22, 105, 20);
+					panel7.add(lblEnterBranchId);
+					
+					JTextField textField7 = new JTextField();
+					textField7.setBounds(134, 22, 86, 20);
+					panel7.add(textField7);
+					textField7.setColumns(10);
+					
+					JButton btnEnter7 = new JButton("Enter");
+					btnEnter7.setBounds(74, 53, 89, 23);
+					panel7.add(btnEnter7);
+					frame7.setVisible(true);
+					btnEnter7.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							String Libid=textField7.getText();
+							System.out.println(Libid);
+							try {
+								Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/city_library","root","root");
+								Statement myStat=myConn.createStatement();
+								ResultSet rs=myStat.executeQuery("SELECT DOCID,COUNT(*) FROM BORROWS WHERE LIBID = "+Libid+" GROUP BY DOCID ORDER BY COUNT(*) DESC LIMIT 10");
+								System.out.println("DOCID  Frequency");
+								while(rs.next())
+					        	{
+					        		System.out.println(rs.getInt(1)+"      "+rs.getInt(2));
+					        	}
+								
+							} 
+							catch(Exception ex)
+							{
+								ex.printStackTrace();
+							}
+						}
+					});
+				}break;
+				
+				case "7":{
+					try {
+						Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/city_library","root","root");
+						Statement myStat=myConn.createStatement();
+						ResultSet rs=myStat.executeQuery("SELECT DOCID FROM BORROWS WHERE datediff(current_date(),BDTIME) < 365 GROUP BY DOCID ORDER BY COUNT(*) DESC LIMIT 10");
+
+						System.out.println("Document ID");
+						while(rs.next())
+			        	{
+			        		System.out.println(rs.getInt(1));
+			        	}
+						
+					} 
+					catch(Exception ex)
+					{
+						ex.printStackTrace();
+					}
+				}break;
+				
+				case "8":{
+					try {
+						Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/city_library","root","root");
+						Statement myStat=myConn.createStatement();
+						ResultSet rs=myStat.executeQuery("(select READERID,avg(datediff(RDTIME,date_add(BDTIME,INTERVAL 20 DAY)) * 0.2) AS fine from borrows where datediff(RDTIME,BDTIME) > 20 group by READERID order by READERID) UNION (SELECT READERID,avg(datediff(RDTIME,date_add(BDTIME,INTERVAL 20 DAY)) * 0) AS fine from borrows where datediff(RDTIME,BDTIME) < 20)");
+						System.out.println("ReaderID   Fine");
+						while(rs.next())
+			        	{
+			        		System.out.println(rs.getInt(1)+"          "+rs.getDouble(2)+" $");
+			        	}
+						
+					} 
+					catch(Exception ex)
+					{
+						ex.printStackTrace();
+					}
+				}break;
+				
+				case "9":{frame6.setVisible(false);}break;
+				
+				default:{
+					JOptionPane.showMessageDialog(null,"Wrong Choice");
+				}break;
+				}
+			}
+		});	
+	}
+}
